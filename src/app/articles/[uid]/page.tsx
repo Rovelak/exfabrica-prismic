@@ -9,9 +9,11 @@ import { Layout } from "@/components/Layout";
 import { Bounded } from "@/components/Bounded";
 import { Heading } from "@/components/Heading";
 import { HorizontalDivider } from "@/components/HorizontalDivider";
+import { ArticleDocument } from "../../../../prismicio-types";
+import { notFound } from "next/navigation";
 
 type Params = { uid: string };
-type Article = { uid: string };
+type Article = { article: ArticleDocument };
 
 const dateFormatter = new Intl.DateTimeFormat("en-US", {
   month: "short",
@@ -19,20 +21,18 @@ const dateFormatter = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
 });
 
-function LatestArticle({ article }: { article: Article }) {
-  const date = prismic.asDate(
-    article.data.publishDate || article.first_publication_date
-  );
+function LatestArticle({ article }: Article) {
+  const date = prismic.asDate(article.data.publish_date);
 
   return (
     <li>
       <h1 className="mb-3 text-3xl font-semibold tracking-tighter text-slate-800 md:text-4xl">
         <PrismicNextLink document={article}>
-          <PrismicText field={article.data.title} />
+          {article.data.title}
         </PrismicNextLink>
       </h1>
       <p className="font-serif italic tracking-tighter text-slate-500">
-        {dateFormatter.format(date)}
+        {dateFormatter.format(date!)}
       </p>
     </li>
   );
@@ -46,9 +46,7 @@ export async function generateMetadata({ params }: { params: Params }) {
     .catch(() => notFound());
 
   return {
-    title: `${prismic.asText(article.data.title)} | ${prismic.asText(
-      settings.data.name
-    )}`,
+    title: `${article.data.title} | ${settings.data.title}`,
     description: article.data.meta_description,
     openGraph: {
       title: article.data.meta_title,
@@ -74,11 +72,11 @@ export default async function Page({ params }: { params: Params }) {
       { field: "document.first_publication_date", direction: "desc" },
     ],
   });
-  const navigation = await client.getSingle("navigation");
+  const navigation = await client.getSingle("menu");
   const settings = await client.getSingle("settings");
 
   const date = prismic.asDate(
-    article.data.publishDate || article.first_publication_date
+    article.data.publish_date || article.first_publication_date
   );
 
   return (
@@ -96,7 +94,7 @@ export default async function Page({ params }: { params: Params }) {
       <article>
         <Bounded className="pb-0">
           <h1 className="mb-3 text-3xl font-semibold tracking-tighter text-slate-800 md:text-4xl">
-            <PrismicText field={article.data.title} />
+            {article.data.title}
           </h1>
           <p className="font-serif italic tracking-tighter text-slate-500">
             {dateFormatter.format(date)}

@@ -1,17 +1,11 @@
 {
-  "id": "navigation",
-  "label": "navigation",
+  "id": "menu",
+  "label": "Menu",
   "format": "custom",
-  "repeatable": true,
+  "repeatable": false,
   "status": true,
   "json": {
     "Main": {
-      "uid": {
-        "config": {
-          "label": "UID"
-        },
-        "type": "UID"
-      },
       "links": {
         "type": "Group",
         "config": {

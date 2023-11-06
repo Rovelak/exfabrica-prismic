@@ -7,9 +7,9 @@ import { dateFormatter } from "@/lib/dateFormatter";
 import { Heading } from "./Heading";
 import { ArticleDocument } from "../../prismicio-types";
 
-type article = { article: ArticleDocument };
+type Article = { article: ArticleDocument };
 
-export function Article({ article }: article) {
+export function Article({ article }: Article) {
   const date = prismic.asDate(article.data.publish_date);
   const excerpt = getExcerpt(article.data.slices);
 

@@ -99,61 +99,57 @@ export type ArticleDocument<Lang extends string = string> =
   >;
 
 /**
- * Item in *navigation → Links*
+ * Item in *Menu → Links*
  */
-export interface NavigationDocumentDataLinksItem {
+export interface MenuDocumentDataLinksItem {
   /**
-   * Label field in *navigation → Links*
+   * Label field in *Menu → Links*
    *
    * - **Field Type**: Text
    * - **Placeholder**: *None*
-   * - **API ID Path**: navigation.links[].label
+   * - **API ID Path**: menu.links[].label
    * - **Documentation**: https://prismic.io/docs/field#key-text
    */
   label: prismic.KeyTextField;
 
   /**
-   * Link field in *navigation → Links*
+   * Link field in *Menu → Links*
    *
    * - **Field Type**: Link
    * - **Placeholder**: *None*
-   * - **API ID Path**: navigation.links[].link
+   * - **API ID Path**: menu.links[].link
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
   link: prismic.LinkField;
 }
 
 /**
- * Content for navigation documents
+ * Content for Menu documents
  */
-interface NavigationDocumentData {
+interface MenuDocumentData {
   /**
-   * Links field in *navigation*
+   * Links field in *Menu*
    *
    * - **Field Type**: Group
    * - **Placeholder**: *None*
-   * - **API ID Path**: navigation.links[]
+   * - **API ID Path**: menu.links[]
    * - **Tab**: Main
    * - **Documentation**: https://prismic.io/docs/field#group
    */
-  links: prismic.GroupField<Simplify<NavigationDocumentDataLinksItem>>;
+  links: prismic.GroupField<Simplify<MenuDocumentDataLinksItem>>;
 }
 
 /**
- * navigation document from Prismic
+ * Menu document from Prismic
  *
- * - **API ID**: `navigation`
- * - **Repeatable**: `true`
+ * - **API ID**: `menu`
+ * - **Repeatable**: `false`
  * - **Documentation**: https://prismic.io/docs/custom-types
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type NavigationDocument<Lang extends string = string> =
-  prismic.PrismicDocumentWithUID<
-    Simplify<NavigationDocumentData>,
-    "navigation",
-    Lang
-  >;
+export type MenuDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithoutUID<Simplify<MenuDocumentData>, "menu", Lang>;
 
 type PageDocumentDataSlicesSlice =
   | QuoteSlice
@@ -268,7 +264,7 @@ export type SettingsDocument<Lang extends string = string> =
 
 export type AllDocumentTypes =
   | ArticleDocument
-  | NavigationDocument
+  | MenuDocument
   | PageDocument
   | SettingsDocument;
 
@@ -799,9 +795,9 @@ declare module "@prismicio/client" {
       ArticleDocument,
       ArticleDocumentData,
       ArticleDocumentDataSlicesSlice,
-      NavigationDocument,
-      NavigationDocumentData,
-      NavigationDocumentDataLinksItem,
+      MenuDocument,
+      MenuDocumentData,
+      MenuDocumentDataLinksItem,
       PageDocument,
       PageDocumentData,
       PageDocumentDataSlicesSlice,
